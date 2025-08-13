@@ -67,10 +67,10 @@ retryClient env retryA retryT res = do
 type FailureMessage = Text
 type MaxRetryT = Int
 
-waitForClient :: (MonadIO m, MonadLogger m) => MaxRetryT -> FailureMessage -> RetryAmount -> RetryTimeout -> IO (Either ClientError a) -> (a -> Bool) -> m (Either ClientError Bool)
+waitForClient :: (MonadIO m, MonadLogger m) => MaxRetryT -> FailureMessage -> RetryAmount -> RetryTimeout -> m (Either ClientError a) -> (a -> Bool) -> m (Either ClientError Bool)
 waitForClient maxRetryT failMessage retryA retryT' v f = do
   let retryT = min maxRetryT retryT'
-  res' <- liftIO v
+  res' <- v
   case res' of
     (Left e) -> if retryA <= 1 then (pure . Left) e else do
       $(logWarn) "Error during API request. Retry..."
