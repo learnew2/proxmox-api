@@ -24,7 +24,7 @@ data ProxmoxVMConfig = ProxmoxVMConfig
   , vmTemplate  :: !Bool
   , vmLock      :: !(Maybe String)
   , vmConfigMap :: !(M.Map String Value)
-  }
+  } deriving (Show, Eq, Ord)
 
 instance FromJSON ProxmoxVMConfig where
   parseJSON = withObject "ProxmoxVMConfig" $ \v -> ProxmoxVMConfig

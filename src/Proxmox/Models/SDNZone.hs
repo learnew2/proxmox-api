@@ -18,7 +18,7 @@ data ProxmoxSDNZone = ProxmoxSDNZone
   , proxmoxSDNZonePending    :: !(Maybe Bool)
   , proxmoxSDNZoneReverseDns :: !(Maybe String)
   , proxmoxSDNZoneState      :: !(Maybe String)
-  } deriving Show
+  } deriving (Show, Eq, Ord)
 
 instance FromJSON ProxmoxSDNZone where
   parseJSON = withObject "ProxmoxSDNZone" $ \v -> ProxmoxSDNZone

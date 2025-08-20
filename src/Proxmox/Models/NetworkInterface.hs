@@ -21,7 +21,7 @@ data NetworkInterfaceType = E1000
   | RTL8139
   | VIRTIO
   | VMXNET3
-  deriving (Eq)
+  deriving (Eq, Ord)
 
 instance FromJSON NetworkInterfaceType where
   parseJSON = withText "NetworkInterfaceType" $ \case

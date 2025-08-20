@@ -13,7 +13,7 @@ import           Parsers
 data ProxmoxStorageFilter = ProxmoxStorageFilter
   { storageEnabled :: !(Maybe Bool)
   , storageTarget  :: !(Maybe Text)
-  } deriving (Show, Eq)
+  } deriving (Show, Eq, Ord)
 
 defaultProxmoxStorageFilter = ProxmoxStorageFilter Nothing Nothing
 
@@ -27,7 +27,7 @@ data ProxmoxStorage = DirectoryStorage
   , proxmoxStorageActive  :: !Bool
   , proxmoxStorageEnabled :: !Bool
   , proxmoxStorageShared  :: !Bool
-  } deriving (Show, Eq)
+  } deriving (Show, Eq, Ord)
 
 genericStorageParser v c = c
   <$> v .: "storage"

@@ -16,7 +16,7 @@ data ProxmoxSDNNetwork = ProxmoxSDNNetwork
   , sdnNetworkTag    :: !(Maybe Int)
   , sdnNetworkName   :: !String
   , sdnNetworkDigest :: !(Maybe String)
-  } deriving (Show, Eq)
+  } deriving (Show, Eq, Ord)
 
 instance FromJSON ProxmoxSDNNetwork where
   parseJSON = withObject "ProxmoxSDNNetwork" $ \v -> ProxmoxSDNNetwork
@@ -39,7 +39,7 @@ data ProxmoxSDNNetworkCreate = ProxmoxSDNNetworkCreate
   , sdnNetworkCreateTag       :: !(Maybe Int)
   , sdnNetworkCreateAlias     :: !(Maybe String)
   , sdnNetworkCreateVlanaware :: !(Maybe Bool)
-  } deriving (Show, Eq)
+  } deriving (Show, Eq, Ord)
 
 instance ToJSON ProxmoxSDNNetworkCreate where
   toJSON (ProxmoxSDNNetworkCreate { .. }) = object $ baseFields ++ tagField ++ aliasField ++ vlanField where

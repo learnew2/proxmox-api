@@ -11,7 +11,7 @@ import qualified Data.Aeson.KeyMap as KM
 import           Data.Text         (Text, pack, unpack)
 import           Servant.API       (ToHttpApiData (..))
 
-data ProxmoxNetworkFilter = AnyBridge | AnyLocalBridge | TypedNetwork ProxmoxNetworkType
+data ProxmoxNetworkFilter = AnyBridge | AnyLocalBridge | TypedNetwork ProxmoxNetworkType deriving (Eq, Ord)
 
 instance Show ProxmoxNetworkFilter where
   show AnyBridge        = "any_bridge"
@@ -21,7 +21,7 @@ instance Show ProxmoxNetworkFilter where
 instance ToHttpApiData ProxmoxNetworkFilter where
   toQueryParam = pack . show
 
-data ProxmoxNetworkType = Bridge | Bond | Eth | Alias | Vlan | OVSBridge | OVSBond | OVSPort | OVSIntPort | Vnet | Unknown Text deriving (Eq)
+data ProxmoxNetworkType = Bridge | Bond | Eth | Alias | Vlan | OVSBridge | OVSBond | OVSPort | OVSIntPort | Vnet | Unknown Text deriving (Eq, Ord)
 
 instance FromJSON ProxmoxNetworkType where
   parseJSON = withText "ProxmoxNetworkType" $ \case
@@ -54,7 +54,7 @@ data ProxmoxNetwork = ProxmoxNetwork
   { proxmoxNetworkInterface :: !String
   , proxmoxNetworkType      :: !ProxmoxNetworkType
   , proxmoxNetworkActive    :: !(Maybe Bool)
-  } deriving Show
+  } deriving (Show, Eq, Ord)
 
 instance FromJSON ProxmoxNetwork where
   parseJSON = withObject "ProxmoxNetwork" $ \v -> ProxmoxNetwork

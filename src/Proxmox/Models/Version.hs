@@ -13,7 +13,7 @@ data ProxmoxVersion = ProxmoxVersion
   , proxmoxRepoID  :: !Text
   , proxmoxVersion :: !Text
   , proxmoxConsole :: !(Maybe ProxmoxConsole)
-  } deriving Show
+  } deriving (Show, Eq, Ord)
 
 instance FromJSON ProxmoxVersion where
   parseJSON = withObject "ProxmoxVersion" $ \v -> ProxmoxVersion
@@ -22,7 +22,7 @@ instance FromJSON ProxmoxVersion where
     <*> v .: "version"
     <*> v .:? "console"
 
-data ProxmoxConsole = Applet | VV | HTML5 | XTermJS | Unknown Text deriving Show
+data ProxmoxConsole = Applet | VV | HTML5 | XTermJS | Unknown Text deriving (Show, Eq, Ord)
 
 instance FromJSON ProxmoxConsole where
   parseJSON = withText "ProxmoxConsole" $ \case

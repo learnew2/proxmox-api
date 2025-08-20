@@ -7,7 +7,7 @@ module Proxmox.Models.Node
 import           Data.Aeson
 import           Data.Text  (toLower)
 
-data ProxmoxNodeStatus = NodeUnknown | NodeOnline | NodeOffline deriving (Show, Eq, Enum)
+data ProxmoxNodeStatus = NodeUnknown | NodeOnline | NodeOffline deriving (Show, Eq, Enum, Ord)
 
 instance FromJSON ProxmoxNodeStatus where
   parseJSON = withText "ProxmoxNodeStatus" $ \v -> case toLower v of
@@ -26,7 +26,7 @@ data ProxmoxNode = ProxmoxNode
   -- in bytes
   , nodeMemory    :: !(Maybe Int)
   , nodeUptime    :: !(Maybe Int)
-  } deriving Show
+  } deriving (Show, Eq, Ord)
 
 instance FromJSON ProxmoxNode where
   parseJSON = withObject "ProxmoxNode" $ \v -> ProxmoxNode

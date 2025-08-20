@@ -17,7 +17,7 @@ data ProxmoxVMCloneParams = ProxmoxVMCloneParams
   , proxmoxVMCloneSnapname    :: !(Maybe Text)
   , proxmoxVMCloneStorage     :: !(Maybe Text)
   , proxmoxVMCloneTarget      :: !(Maybe Text)
-  } deriving (Show, Eq)
+  } deriving (Show, Eq, Ord)
 
 instance ToJSON ProxmoxVMCloneParams where
   toJSON (ProxmoxVMCloneParams { .. }) = object $

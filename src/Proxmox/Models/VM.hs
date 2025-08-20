@@ -17,7 +17,7 @@ data ProxmoxVMDeleteRequest = ProxmoxVMDeleteRequest
   { proxmoxPurgeVM              :: !Bool
   , proxmoxSkipLock             :: !Bool
   , proxmoxDestroyUnrefferenced :: !Bool
-  } deriving (Show, Eq)
+  } deriving (Show, Eq, Ord)
 
 instance ToJSON ProxmoxVMDeleteRequest where
   toJSON (ProxmoxVMDeleteRequest { .. }) = object
@@ -35,7 +35,7 @@ instance FromJSON ProxmoxVMStatusWrapper where
   parseJSON = withObject "ProxmoxVMStatusWrapper" $ \v -> ProxmoxVMStatusWrapper
     <$> v .: "status"
 
-data ProxmoxVMStatus = VMRunning | VMStopped | VMUnknown Text deriving (Show, Eq)
+data ProxmoxVMStatus = VMRunning | VMStopped | VMUnknown Text deriving (Show, Eq, Ord)
 
 instance FromJSON ProxmoxVMStatus where
   parseJSON = withText "ProxmoxVMStatus" $ \case
@@ -51,7 +51,7 @@ data ProxmoxVM = ProxmoxVM
   , vmTemplate :: !Bool
   , vmLock     :: !(Maybe String)
   , vmStatus   :: !ProxmoxVMStatus
-  } deriving Show
+  } deriving (Show, Eq, Ord)
 
 instance FromJSON ProxmoxVM where
   parseJSON = withObject "ProxmoxVM" $ \v -> ProxmoxVM
