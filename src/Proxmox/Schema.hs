@@ -59,7 +59,7 @@ type ProxmoxAPI = "version" :> Get '[JSON] (ProxmoxResponse ProxmoxVersion)
   :<|> "nodes" :> NodeNameCapture :> "storage" :> QueryParam "enabled" NumericBoolWrapper :> QueryParam "target" Text :> Get '[JSON] (ProxmoxResponse [ProxmoxStorage])
   :<|> "nodes" :> NodeNameCapture :> "qemu" :> VMIDCapture :> "snapshot" :> Get '[JSON] (ProxmoxResponse [ProxmoxSnapshot])
   :<|> "nodes" :> NodeNameCapture :> "qemu" :> VMIDCapture :> "snapshot" :> SnapshotNameCapture :> Delete '[JSON] ()
-  :<|> "nodes" :> NodeNameCapture :> "qemu" :> VMIDCapture :> "snapshot" :> SnapshotNameCapture :> "rollback" :> QueryParam "start" Bool :> Post '[JSON] ()
+  :<|> "nodes" :> NodeNameCapture :> "qemu" :> VMIDCapture :> "snapshot" :> SnapshotNameCapture :> "rollback" :> ReqBody '[JSON] ProxmoxRollbackParams :> Post '[JSON] ()
   :<|> "nodes" :> NodeNameCapture :> "qemu" :> VMIDCapture :> "snapshot" :> ReqBody '[JSON] ProxmoxSnapshotCreate :> Post '[JSON] (ProxmoxResponse String)
 
 runProxmoxState :: ProxmoxState -> ProxmoxM a -> IO a

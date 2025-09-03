@@ -3,6 +3,7 @@
 module Proxmox.Models.Snapshot
   ( ProxmoxSnapshot(..)
   , ProxmoxSnapshotCreate(..)
+  , ProxmoxRollbackParams(..)
   ) where
 
 import           Data.Aeson
@@ -54,3 +55,10 @@ instance ToJSON ProxmoxSnapshotCreate where
     , "snapname" .= snapshotCreateName
     , "vmstate" .= snapshotCreateStateful
     ]
+
+data ProxmoxRollbackParams = ProxmoxRollbackParams
+  { rollbackStart :: !Bool
+  } deriving (Show, Eq, Ord)
+
+instance ToJSON ProxmoxRollbackParams where
+  toJSON (ProxmoxRollbackParams start) = object ["start" .= start]
