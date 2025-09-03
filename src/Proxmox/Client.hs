@@ -28,6 +28,10 @@ module Proxmox.Client
   , putVMConfig
   , deleteVMConfig
   , getNodeStorage
+  , getVMSnapshots
+  , deleteVMSnapshot
+  , rollbackVM
+  , createSnapshot
   ) where
 
 
@@ -75,7 +79,11 @@ getVersion
   :<|> cloneVM
   :<|> deleteSDNNetwork
   :<|> putVMConfig
-  :<|> getNodeStorage' = client api
+  :<|> getNodeStorage'
+  :<|> getVMSnapshots
+  :<|> deleteVMSnapshot
+  :<|> rollbackVM
+  :<|> createSnapshot = client api
 
 getNodeStorage :: Text -> ProxmoxStorageFilter -> ClientM [ProxmoxStorage]
 getNodeStorage nodeName (ProxmoxStorageFilter { .. }) = do

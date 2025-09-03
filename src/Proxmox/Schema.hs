@@ -22,6 +22,7 @@ import           Proxmox.Models.Network     (ProxmoxNetwork,
 import           Proxmox.Models.Node
 import           Proxmox.Models.SDNNetwork
 import           Proxmox.Models.SDNZone
+import           Proxmox.Models.Snapshot
 import           Proxmox.Models.Storage
 import           Proxmox.Models.Version
 import           Proxmox.Models.VM          (ProxmoxVM, ProxmoxVMDeleteRequest,
@@ -36,6 +37,7 @@ data ProxmoxState = ProxmoxState BaseUrl Manager
 
 type ProxmoxM m = ReaderT ProxmoxState IO m
 type NodeNameCapture = Capture "nodename" Text
+type SnapshotNameCapture = Capture "snapname" Text
 type VMIDCapture = Capture "vmid" Int
 
 type ProxmoxAPI = "version" :> Get '[JSON] (ProxmoxResponse ProxmoxVersion)
@@ -55,6 +57,10 @@ type ProxmoxAPI = "version" :> Get '[JSON] (ProxmoxResponse ProxmoxVersion)
   :<|> "cluster" :> "sdn" :> "vnets" :> Capture "vnet" Text :> Delete '[JSON] ()
   :<|> "nodes" :> NodeNameCapture :> "qemu" :> VMIDCapture :> "config" :> ReqBody '[JSON] (M.Map String Value) :> Put '[JSON] (ProxmoxResponse ())
   :<|> "nodes" :> NodeNameCapture :> "storage" :> QueryParam "enabled" NumericBoolWrapper :> QueryParam "target" Text :> Get '[JSON] (ProxmoxResponse [ProxmoxStorage])
+  :<|> "nodes" :> NodeNameCapture :> "qemu" :> VMIDCapture :> "snapshot" :> Get '[JSON] (ProxmoxResponse [ProxmoxSnapshot])
+  :<|> "nodes" :> NodeNameCapture :> "qemu" :> VMIDCapture :> "snapshot" :> SnapshotNameCapture :> Delete '[JSON] ()
+  :<|> "nodes" :> NodeNameCapture :> "qemu" :> VMIDCapture :> "snapshot" :> SnapshotNameCapture :> "rollback" :> QueryParam "start" Bool :> Post '[JSON] ()
+  :<|> "nodes" :> NodeNameCapture :> "qemu" :> VMIDCapture :> "snapshot" :> ReqBody '[JSON] ProxmoxSnapshotCreate :> Post '[JSON] (ProxmoxResponse String)
 
 runProxmoxState :: ProxmoxState -> ProxmoxM a -> IO a
 runProxmoxState = flip runReaderT
