@@ -9,6 +9,7 @@ module Proxmox.Retry
   , waitForClient
   , retryClientC
   , defaultRetryClientC
+  , defaultRetryClientC'
   ) where
 
 import           Control.Concurrent
@@ -31,6 +32,9 @@ defaultRetryClient' (ProxmoxState url manager) = defaultRetryClient (mkClientEnv
 
 defaultRetryClientC :: (MonadLoggerIO m) => ClientEnv -> ClientM a -> m (Either ClientError a)
 defaultRetryClientC env = retryClientC env 5 1_500_000
+
+defaultRetryClientC' :: (MonadLoggerIO m) => ProxmoxState -> ClientM a -> m (Either ClientError a)
+defaultRetryClientC' (ProxmoxState url manager) = defaultRetryClientC (mkClientEnv manager url)
 
 retryClientC :: (MonadLogger m, MonadIO m) => ClientEnv -> RetryAmount -> RetryTimeout -> ClientM a -> m (Either ClientError a)
 retryClientC env 0 _ res = liftIO (runClientM res env)
